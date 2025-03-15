@@ -6,7 +6,8 @@ Robust favorites window, made with UIToolkit
 
 ## Features
 - Supports both project and scene assets
-- Easy categories navigation
+- Easy groups navigation
+- Preview for supported assets
 - Highly customizable
 - Smooth transitions and animations
 
@@ -14,5 +15,6 @@ Robust favorites window, made with UIToolkit
 1. Open window by going Window/Favorites
 2. FavoritesData asset will be created in the project root, it contains data and various settings. You can move it anywhere you like
 3. Drag and drop your assets in and out the window. Single click the asset to focus, double click to open
-4. Navigate categories, using scroll wheel or UI buttons
-5. Rename category by clicking on its name
+4. Navigate groups, using scroll wheel or UI buttons
+5. Rename group by clicking on its name
+6. Remove asset from the group by hovering over it and clicking the cross button 
