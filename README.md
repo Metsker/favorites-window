@@ -15,4 +15,4 @@ Robust favorites window, made with UIToolkit
 2. FavoritesData asset will be created in the project root, it contains data and various settings. You can move it anywhere you like
 3. Drag and drop your assets in and out the window. Single click the asset to focus, double click to open
 4. Navigate categories, using scroll wheel or UI buttons
-5. Rename categories by clicking on its name
+5. Rename category by clicking on its name
