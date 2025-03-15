@@ -9,5 +9,3 @@ Robust favorites window, made with UIToolkit
 - Easy categories navigation via scroll wheel or UI buttons
 - Highly customizable
 - Smooth transitions and animations
-
-Inspired by https://assetstore.unity.com/packages/tools/utilities/vfavorites-2-263643
