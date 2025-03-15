@@ -52,16 +52,7 @@ namespace Favorites.Editor
 
         private void AddList()
         {
-            string listName = "Page 1";
-            string[] names = ListNames();
-            
-            for (int i = 1; i < favoriteLists.Count + 1; i++)
-            {
-                if (names.Contains(listName))
-                    listName = "Page " + (i + 1);
-            }
-            
-            favoriteLists.Add(new FavoritesList(listName));
+            favoriteLists.Add(new FavoritesList("Page " + (favoriteLists.Count + 1)));
             
             CurrentListIndex = favoriteLists.Count - 1;
         }
