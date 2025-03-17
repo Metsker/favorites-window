@@ -5,9 +5,8 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - m_ViewDataDictionary: {instanceID: 0}
-  - tree: {fileID: 9197481963319205126, guid: 9638dc613f4054443a3d8e3929df2b2c, type: 3}
-  - list: {fileID: 9197481963319205126, guid: b6a1b025be64cdf449927e0914c42e2c, type: 3}
-  - data: {fileID: 11400000, guid: ac39cac3667a75142a7d7d9b41773dbb, type: 2}
+  - tree: {fileID: 9197481963319205126, guid: 9e5ab456890d28b47abaf1c199722fed, type: 3}
+  - list: {fileID: 9197481963319205126, guid: b341be454217ad04f9ca7465eadcafc0, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

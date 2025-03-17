@@ -13,7 +13,7 @@ namespace Favorites.Editor
         private FavoritesController _controller;
 
         [MenuItem("Window/Favorites")]
-        public static void ShowExample()
+        public static void Open()
         {
             FavoritesWindow wnd = GetWindow<FavoritesWindow>();
             wnd.titleContent = new GUIContent("Favorites", EditorGUIUtility.IconContent("d_Favorite").image);
