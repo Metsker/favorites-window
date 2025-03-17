@@ -1,0 +1,7 @@
+﻿{
+  "name": "Favorites.Editor",
+  "includePlatforms": ["Editor"],
+  "references": [
+    "Unity.EditorCoroutines.Editor"
+  ]
+}

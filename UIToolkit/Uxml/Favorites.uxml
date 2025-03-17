@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.metsker.favorites/UIToolkit/Uss/favorites.uss?fileID=7433441132597879392&amp;guid=d16546c408cf578439cad6a8fa4903a3&amp;type=3#favorites" />
+    <ui:VisualElement name="Root" style="flex-grow: 1;">
+        <ui:VisualElement name="Footer" style="flex-grow: 0; align-content: center; flex-direction: row; margin-bottom: 10px; position: absolute; bottom: 0; align-self: center; background-color: rgb(0, 0, 0); border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px; opacity: 0.66;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.metsker.favorites/UIToolkit/Uss/favorites.uss?fileID=7433441132597879392&amp;guid=d16546c408cf578439cad6a8fa4903a3&amp;type=3#favorites" />
+    <ui:VisualElement name="FavoriteItem" style="flex-grow: 0; flex-direction: row; height: 55px;">
+        <ui:VisualElement name="Ico" style="width: 55px; margin-right: 10px;">
+            <Bindings>
+                <ui:DataBinding property="style.width" data-source-path="itemHeight" binding-mode="ToTarget" />
+            </Bindings>
+        </ui:VisualElement>
+        <ui:Label text="Label" name="Name" class="footer" style="-unity-text-align: middle-left; color: rgb(229, 229, 229); font-size: 22px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-grow: 1; flex-shrink: 0; -unity-font-style: normal;">
+            <Bindings>
+                <ui:DataBinding property="style.fontSize" data-source-path="itemFontSize" binding-mode="ToTarget" />
+            </Bindings>
+        </ui:Label>
+        <ui:Button text="X" name="Remove" class="remove-button button-interactable" style="-unity-font-style: bold; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; transition-duration: 0.2s; display: flex; opacity: 0; transition-timing-function: ease-in-out-sine;" />
+        <Bindings>
+            <ui:DataBinding property="style.height" data-source-path="itemHeight" binding-mode="ToTarget" />
+        </Bindings>
+    </ui:VisualElement>
+</ui:UXML>
