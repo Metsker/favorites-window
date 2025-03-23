@@ -9,7 +9,6 @@ namespace Favorites.Editor
         [SerializeField] private VisualTreeAsset tree;
         [SerializeField] private VisualTreeAsset list;
 
-        private FavoritesData _data;
         private FavoritesController _controller;
 
         [MenuItem("Window/Favorites")]
@@ -23,23 +22,22 @@ namespace Favorites.Editor
         {
             tree.CloneTree(rootVisualElement);
 
-            LoadOrCreateData();
-
-            _controller = new FavoritesController(rootVisualElement, list, _data);
+            _controller = new FavoritesController(rootVisualElement, list, LoadOrCreateData());
         }
 
-        private void LoadOrCreateData()
+        private FavoritesData LoadOrCreateData()
         {
             string[] assets = AssetDatabase.FindAssets($"t: {typeof(FavoritesData)}");
             if (assets.Length == 0)
             {
-                _data = CreateInstance<FavoritesData>();
+                var data = CreateInstance<FavoritesData>();
                 string assetName = AssetDatabase.GenerateUniqueAssetPath("Assets/FavoritesData.asset");
-                AssetDatabase.CreateAsset(_data, assetName);
+                AssetDatabase.CreateAsset(data, assetName);
                 AssetDatabase.SaveAssets();
+                return data;
             }
             else
-                _data = AssetDatabase.LoadAssetAtPath<FavoritesData>(AssetDatabase.GUIDToAssetPath(assets[0]));
+                return AssetDatabase.LoadAssetAtPath<FavoritesData>(AssetDatabase.GUIDToAssetPath(assets[0]));
         }
     }
 }
