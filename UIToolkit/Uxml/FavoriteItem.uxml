@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <Style src="project://database/Packages/com.metsker.favorites/UIToolkit/Uss/favorites.uss?fileID=7433441132597879392&amp;guid=d16546c408cf578439cad6a8fa4903a3&amp;type=3#favorites" />
+    <Style src="project://database/Packages/com.metsker.favorites/UIToolkit/Uss/favorites.uss" />
     <ui:VisualElement name="FavoriteItem" style="flex-grow: 0; flex-direction: row; height: 55px;">
         <ui:VisualElement name="Ico" style="width: 55px; margin-right: 10px;">
             <Bindings>
