@@ -25,19 +25,18 @@ namespace Favorites.Editor
             _controller = new FavoritesController(rootVisualElement, list, LoadOrCreateData());
         }
 
-        private FavoritesData LoadOrCreateData()
+        private static FavoritesSettings LoadOrCreateData()
         {
-            string[] assets = AssetDatabase.FindAssets($"t: {typeof(FavoritesData)}");
-            if (assets.Length == 0)
-            {
-                var data = CreateInstance<FavoritesData>();
-                string assetName = AssetDatabase.GenerateUniqueAssetPath("Assets/FavoritesData.asset");
-                AssetDatabase.CreateAsset(data, assetName);
-                AssetDatabase.SaveAssets();
-                return data;
-            }
-            else
-                return AssetDatabase.LoadAssetAtPath<FavoritesData>(AssetDatabase.GUIDToAssetPath(assets[0]));
+            string[] assets = AssetDatabase.FindAssets($"t: {typeof(FavoritesSettings)}");
+            
+            if (assets.Length != 0)
+                return AssetDatabase.LoadAssetAtPath<FavoritesSettings>(AssetDatabase.GUIDToAssetPath(assets[0]));
+            
+            FavoritesSettings settings = CreateInstance<FavoritesSettings>();
+            string assetName = AssetDatabase.GenerateUniqueAssetPath($"Assets/{nameof(FavoritesSettings)}.asset");
+            AssetDatabase.CreateAsset(settings, assetName);
+            AssetDatabase.SaveAssets();
+            return settings;
         }
     }
 }

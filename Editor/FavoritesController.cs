@@ -13,7 +13,8 @@ namespace Favorites.Editor
 {
     public class FavoritesController
     {
-        private readonly FavoritesData _data;
+        private static FavoritesCache Cache => FavoritesCache.instance;
+        
         private readonly VisualElement _root;
         private readonly VisualElement _footer;
         private readonly VisualTreeAsset _listAsset;
@@ -24,12 +25,11 @@ namespace Favorites.Editor
         private VisualElement _preview;
         private Task scrollTask;
 
-        public FavoritesController(VisualElement rootVisualElement, VisualTreeAsset listAsset, FavoritesData data)
+        public FavoritesController(VisualElement rootVisualElement, VisualTreeAsset listAsset, FavoritesSettings settings)
         {
             _root = rootVisualElement.Q("Root");
-            _root.dataSource = data;
+            _root.dataSource = settings;
             _listAsset = listAsset;
-            _data = data;
 
             _footer = _root.Q("Footer");
             _footer.RegisterCallback<WheelEvent>(OnFooterScrolled);
@@ -68,6 +68,22 @@ namespace Favorites.Editor
                     break;
             }
         }
+        
+        private void OnBodyScrolled(WheelEvent wheelEvent)
+        {
+            if (_root.Q("unity-dragger").visible)
+                return;
+            
+            switch (wheelEvent.delta.y)
+            {
+                case > 0:
+                    DelayedByFrame(OnNext);
+                    break;
+                case < 0:
+                    DelayedByFrame(OnPrevious);
+                    break;
+            }
+        }
 
         private void OnReject() =>
             BuildFooter();
@@ -82,7 +98,7 @@ namespace Favorites.Editor
                 return;
             }
             
-            _data.CurrentList.name = value;
+            Cache.CurrentList.name = value;
             BuildFooter();
         }
 
@@ -97,9 +113,9 @@ namespace Favorites.Editor
             
             _footer.Add(backButton);
             
-            backButton.SetEnabled(_data.CurrentListIndex > 0);
+            backButton.SetEnabled(Cache.CurrentListIndex > 0);
             
-            Label label = new Label(_data.CurrentList.name)
+            Label label = new Label(Cache.CurrentList.name)
             {
                 name = "Category"
             }.AddClass("footer", "text-interactable");
@@ -127,7 +143,7 @@ namespace Favorites.Editor
             
             TextField textField = new()
             {
-                value = _data.CurrentList.name,
+                value = Cache.CurrentList.name,
                 selectAllOnFocus = true
             };
             textField.Q("unity-text-input").AddToClassList("footer");
@@ -166,22 +182,22 @@ namespace Favorites.Editor
                 _preview ??= ConstructPreview(_listView.itemTemplate);
 
                 _listView.makeNoneElement = () => new Label("Drop folders, assets \n or GameObjects").AddClass("non-element");
-                _listView.AddManipulator(new FavoritesDragAndDropManipulator(_listView, _data, _preview));
+                _listView.AddManipulator(new FavoritesDragAndDropManipulator(_listView, _preview));
                 _listView.RegisterCallback<PointerUpEvent>(OnClickAway);
-                _listView.RegisterCallback<WheelEvent>(OnFooterScrolled);
+                _listView.RegisterCallback<WheelEvent>(OnBodyScrolled);
 
-                _listView.itemsSource = _data.CurrentList.serializedIds;
+                _listView.itemsSource = Cache.CurrentList.serializedIds;
 
                 manipulators.Clear();
             
                 _listView.bindItem = (item, index) =>
                 {
-                    Object currentObject = _data.CurrentList.Get(index);
+                    Object currentObject = Cache.CurrentList.Get(index);
                 
                     item.Q<Label>("Name").text = currentObject.name;
                     AssignIco(item.Q("Ico"), currentObject);
                 
-                    FavoriteItemManipulator manipulator = new (_listView, index, _data);
+                    FavoriteItemManipulator manipulator = new (_listView, index);
 
                     item.AddManipulator(manipulator);
                     manipulators.Add(index, manipulator);
@@ -203,7 +219,7 @@ namespace Favorites.Editor
 
         private void OnNext()
         {
-            _data.CurrentListIndex++;
+            Cache.CurrentListIndex++;
             UpdateName();
 
             Transition("page-hidden-left", "page-hidden-right");
@@ -211,10 +227,10 @@ namespace Favorites.Editor
 
         private void OnPrevious()
         {
-            if (_data.CurrentListIndex == 0)
+            if (Cache.CurrentListIndex == 0)
                 return;
             
-            _data.CurrentListIndex--;
+            Cache.CurrentListIndex--;
             UpdateName();
             
             Transition("page-hidden-right", "page-hidden-left");
@@ -237,8 +253,8 @@ namespace Favorites.Editor
 
         private void UpdateName()
         {
-            _footer.Q("Back_button").SetEnabled(_data.CurrentListIndex > 0);
-            _footer.Q<Label>("Category").text = _data.CurrentList.name;
+            _footer.Q("Back_button").SetEnabled(Cache.CurrentListIndex > 0);
+            _footer.Q<Label>("Category").text = Cache.CurrentList.name;
         }
 
         private void DelayedByFrame(Action action) =>

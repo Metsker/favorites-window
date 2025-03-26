@@ -6,19 +6,21 @@ namespace Favorites.Editor.Manipulators
 {
     public class FavoriteItemManipulator : PointerManipulator
     {
+        private const double DoubleClickTime = 0.5f;
+        private const double PingTime = 2;
+        private static FavoritesCache Cache => FavoritesCache.instance;
+        
         private readonly ListView _listView;
         private readonly int _index;
-        private readonly FavoritesData _data;
 
         private Button _removeButton;
         
         private Object lastObjectSelected;
         private double lastObjectSelectedAt;
 
-        public FavoriteItemManipulator(ListView listView, int index, FavoritesData data)
+        public FavoriteItemManipulator(ListView listView, int index)
         {
             _listView = listView;
-            _data = data;
             _index = index;
         }
         
@@ -59,13 +61,13 @@ namespace Favorites.Editor.Manipulators
             if (_listView.selectedIndex != _index)
                 return;
             
-            Object currentObject = _data.CurrentList.Get(_index);
+            Object currentObject = Cache.CurrentList.Get(_index);
             Selection.activeObject = currentObject;
             if (lastObjectSelected == currentObject)
             {
-                if (lastObjectSelectedAt + _data.doubleClickTime > EditorApplication.timeSinceStartup)
+                if (lastObjectSelectedAt + DoubleClickTime > EditorApplication.timeSinceStartup)
                     AssetDatabase.OpenAsset(currentObject);
-                else if (lastObjectSelectedAt + _data.pingTime > EditorApplication.timeSinceStartup)
+                else if (lastObjectSelectedAt + PingTime > EditorApplication.timeSinceStartup)
                     EditorGUIUtility.PingObject(currentObject);
             }
             lastObjectSelected = currentObject;
@@ -75,7 +77,7 @@ namespace Favorites.Editor.Manipulators
         private void OnRemoveEvent()
         {
             
-            _data.CurrentList.RemoveAt(_index);
+            Cache.CurrentList.RemoveAt(_index);
             _listView.RefreshItems();
         }
 

@@ -8,18 +8,18 @@ namespace Favorites.Editor.Manipulators
 {
     public class FavoritesDragAndDropManipulator : PointerManipulator
     {
+        private static FavoritesCache Cache => FavoritesCache.instance;
+        
         private readonly ListView _listView;
-        private readonly FavoritesData _data;
         private readonly VisualElement _previewIco;
         private readonly Label _previewName;
         private readonly VisualElement _preview;
         
         private DragVisualMode _dragMode;
 
-        public FavoritesDragAndDropManipulator(ListView listView, FavoritesData data, VisualElement preview)
+        public FavoritesDragAndDropManipulator(ListView listView, VisualElement preview)
         {
             _listView = listView;
-            _data = data;
             _preview = preview;
             _previewIco = _preview.Q("Ico");
             _previewName = _preview.Q<Label>("Name");
@@ -62,7 +62,7 @@ namespace Favorites.Editor.Manipulators
             
             _preview.style.display = DisplayStyle.Flex;
             
-            _dragMode = _data.CurrentList.Contains(GlobalObjectId.GetGlobalObjectIdSlow(currentObject)) ? DragVisualMode.Move : DragVisualMode.Copy;
+            _dragMode = Cache.CurrentList.Contains(GlobalObjectId.GetGlobalObjectIdSlow(currentObject)) ? DragVisualMode.Move : DragVisualMode.Copy;
         }
 
         private void OnDragLeave(DragLeaveEvent evt) =>
@@ -76,9 +76,9 @@ namespace Favorites.Editor.Manipulators
         private StartDragArgs OnSetupDragAndDrop(SetupDragAndDropArgs arg)
         {
             StartDragArgs drag = new ("Favorites", DragVisualMode.Move);
-            drag.SetUnityObjectReferences(_data.CurrentList.Get(arg.selectedIds));
+            drag.SetUnityObjectReferences(Cache.CurrentList.Get(arg.selectedIds));
             
-            Object currentObject = _data.CurrentList.Get(arg.selectedIds.First());
+            Object currentObject = Cache.CurrentList.Get(arg.selectedIds.First());
             
             _previewName.text = currentObject.name;
             
@@ -108,7 +108,7 @@ namespace Favorites.Editor.Manipulators
             List<GlobalObjectId> newObjects = FilterNewObjects(data.dragAndDropData.unityObjectReferences);
 
             if (newObjects.Count > 0)
-                _data.CurrentList.InsertRange(newIndex, newObjects);
+                Cache.CurrentList.InsertRange(newIndex, newObjects);
             else
             {
                 if (newIndex > _listView.selectedIndex)
@@ -116,8 +116,8 @@ namespace Favorites.Editor.Manipulators
 
                 GlobalObjectId item = GlobalObjectId.GetGlobalObjectIdSlow(data.dragAndDropData.unityObjectReferences.First());
                 
-                _data.CurrentList.Remove(item);
-                _data.CurrentList.Insert(newIndex, item);
+                Cache.CurrentList.Remove(item);
+                Cache.CurrentList.Insert(newIndex, item);
             }
             _listView.RefreshItems();
             _listView.SetSelection(newIndex);
@@ -132,7 +132,7 @@ namespace Favorites.Editor.Manipulators
             {
                 GlobalObjectId obj = GlobalObjectId.GetGlobalObjectIdSlow(iObject);
                
-                if (!_data.CurrentList.Contains(obj))
+                if (!Cache.CurrentList.Contains(obj))
                     objsToAdd.Add(obj);
             }
             return objsToAdd;
