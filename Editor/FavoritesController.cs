@@ -199,8 +199,11 @@ namespace Favorites.Editor
                 
                     FavoriteItemManipulator manipulator = new (_listView, index);
 
-                    item.AddManipulator(manipulator);
-                    manipulators.Add(index, manipulator);
+                    if (!manipulators.ContainsKey(index))
+                    {
+                        item.AddManipulator(manipulator);
+                        manipulators.Add(index, manipulator);
+                    }
                 };
 
                 _listView.unbindItem = (item, index) =>
