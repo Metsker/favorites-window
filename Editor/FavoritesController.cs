@@ -193,7 +193,13 @@ namespace Favorites.Editor
                 _listView.bindItem = (item, index) =>
                 {
                     Object currentObject = Cache.CurrentList.Get(index);
-                
+
+                    if (currentObject == null)
+                    {
+                        Cache.CurrentList.RemoveAt(index);
+                        return;
+                    }
+                    
                     item.Q<Label>("Name").text = currentObject.name;
                     AssignIco(item.Q("Ico"), currentObject);
                 
